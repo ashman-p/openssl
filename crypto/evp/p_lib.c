@@ -130,8 +130,14 @@ int EVP_PKEY_cmp(const EVP_PKEY *a, const EVP_PKEY *b)
                 return ret;
         }
 
-        if (a->ameth->pub_cmp)
-            return a->ameth->pub_cmp(a, b);
+        if (a->ameth->pub_cmp) {
+            ret = a->ameth->pub_cmp(a, b);
+            if (ret == 0) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
     }
 
     return -2;
